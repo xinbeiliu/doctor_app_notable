@@ -17,11 +17,22 @@ def index():
     return render_template('doctor_list.html', doctors=doctors)
 
 
-@app.route('/appointment', methods=['GET'])
-def appointment_form():
+@app.route('/doctors/<int:doctor_id>', methods=['GET'])
+def doctor_detail(doctor_id):
     """Show appointment form"""
 
+    doctor = Doctor.query.get(doctor_id)
+   
     return render_template('appointment_form.html')
+
+
+@app.route('/appointment', methods=['GET'])
+def appointment_list():
+    """Show a list of appointment"""
+
+    appointments = Appointment.query.all()
+
+    return render_template('appointment_list.html', appointments=appointments)
 
 
 @app.route('/appointment', methods=['POST'])
@@ -30,20 +41,15 @@ def make_appointment():
 
     fname = request.form['fname']
     lname = request.form['lname']
-    time
-    kind
+    patient_type = request.form['patient_type']
+    appointment_time = request.form['appointment_time']
 
-    return redirect('/')
+    new_patient = Patient(fname=fname, lname=lname, patient_type=patient_type, 
+                          appointment_time=appointment_time)
+    db.session.add(new_patient)
+    db.session.commit()
 
-
-@app.route('/doctors/<int:doctor_id>', methods=['GET'])
-def doctor_detail(docto_id):
-    """Show a list of appointment for a specific doctor"""
-
-    doctor = Doctor.query.get(doctor_id)
-    appointment = Appointment.query.filter_by(doctor_id=doctor_id)
-
-    return render_template('appointment_detail.html', appointment=appointment)
+    return redirect('/appointment')
 
 
 #########################################################################

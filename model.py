@@ -13,6 +13,7 @@ class Doctor(db.Model):
     doctor_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(30), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
 
@@ -27,6 +28,8 @@ class Patient(db.Model):
     patient_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(30), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
+    patient_type = db.Column(db.String, nullable=False)
+    appointment_time = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
 
@@ -43,8 +46,7 @@ class Appointment(db.Model):
                            nullable=False)
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.doctor_id'), 
                            nullable=False)
-    date_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    kind = db.Column(db.String, nullable=False)
+    date_added = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
 
     patients = db.relationship("Patient", backref=db.backref("appointments", 
                                order_by=appointment_id))

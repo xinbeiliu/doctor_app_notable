@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Here is the list of appointments</h3>
+
+{% for appointment in appointments %}
+    {{ appointment }}
+{% endfor%}
+
+{% endblock content %}
